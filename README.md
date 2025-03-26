@@ -6,10 +6,11 @@
 
 - 访问[DIMA Evaluation Tool](http://106.75.229.152:8080/)，点击register
 - 在注册页面填入相关的信息，信息填写的相关要求如下
-  - First Name/Last Name: 请使用汉语拼音 
+  - Username: 请使用姓名汉语拼音，中间不要有空格 (例如, 张三 SanZhang)
+  - First Name/Last Name: 请使用汉语拼音，中间不要有空格 
   - University: 选 other, 填 ECNU
-  - Semester: 2025
-  - Matriculation Number: 年份+序号, 不足六位请在序号前面补 0 (例如, 今年为2025年，序号为8的同学, 此处填写 202508;
+  - Semester: 25
+  - Matriculation Number: 年份+课程序号, 不足六位请在序号前面补 0 (例如, 今年为2025年，序号为8的同学, 此处填写 202508;
     序号为 18 的同学, 此处填写 202518; 依此类推)
 
 #### 2. 访问DIMA Evaluation Tool试题
