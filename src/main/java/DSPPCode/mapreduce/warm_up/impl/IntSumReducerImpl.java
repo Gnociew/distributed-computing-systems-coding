@@ -11,6 +11,7 @@ import java.io.IOException;
  */
 public class IntSumReducerImpl extends IntSumReducer {
 
+  ///  存储最终统计结果
   private IntWritable result = new IntWritable();
 
   @Override
