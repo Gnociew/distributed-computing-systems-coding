@@ -11,6 +11,7 @@ import static DSPPTest.util.FileOperator.readFile2String;
 import static DSPPTest.util.FileOperator.readFolder2StringExcludeHiddenFiles;
 import static DSPPTest.util.Verifier.verifyList;
 
+
 public class SemiJoinTest extends TestTemplate {
 
   @Test
@@ -31,6 +32,11 @@ public class SemiJoinTest extends TestTemplate {
     if (!successFile.delete()){
       System.err.println("不能删除Success文件");
     }
+
+    // String actualOutput = readFolder2StringExcludeHiddenFiles(outputFolder);
+    // System.out.println("Mapper 输出结果：");
+    // System.out.println(actualOutput);
+
     verifyList(readFolder2StringExcludeHiddenFiles(outputFolder), readFile2String(answerFile));
     System.out.println("恭喜通过~");
     System.exit(exitCode);
