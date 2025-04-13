@@ -37,4 +37,3 @@ public abstract class PageRankCountRunner extends Configured implements Tool {
   public abstract void configureMapReduceTask(Job job,String []strings)
       throws Exception;
 }
-
