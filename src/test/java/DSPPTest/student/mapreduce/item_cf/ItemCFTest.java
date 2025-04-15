@@ -25,6 +25,7 @@ public class ItemCFTest extends TestTemplate {
   // 测试Step1，同现矩阵
   @Test
   public void test1() throws Exception {
+    // System.out.println(outputPath1);
     deleteFolder(outputPath1);
 
     String[] args = new String[]{"3", "3", inputPath1, outputPath1};

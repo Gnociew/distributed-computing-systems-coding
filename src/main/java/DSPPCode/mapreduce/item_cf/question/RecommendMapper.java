@@ -20,10 +20,13 @@ abstract public class RecommendMapper extends Mapper<Object, Text, Text, Text> {
 
   @Override
   protected void setup(Context context) throws IOException, InterruptedException {
+    // 获取用户数和物品数
     users = context.getConfiguration().getInt(Constants.USER_COUNT, 0);
     items = context.getConfiguration().getInt(Constants.ITEM_COUNT, 0);
+    // 获取文件名
     userScoreMatrixFileName = context.getConfiguration().get(Constants.USER_SCORE_MATRIX_FILE_NAME, "");
     coOccurrenceMatrixFileName = context.getConfiguration().get(Constants.CO_OCCURRENCE_MATRIX_FILE_NAME, "");
+    // 当前输入文件的信息
     FileSplit fileSplit = (FileSplit) context.getInputSplit();
     fileName = fileSplit.getPath().getParent().getName();
   }
