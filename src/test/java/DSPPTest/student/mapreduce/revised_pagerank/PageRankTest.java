@@ -22,8 +22,10 @@ public class PageRankTest extends TestTemplate {
 
     String outputPath1 = outputPath + "/step_one";
     String outputFile1 = outputPath1 + "/part-r-00000";
+//    System.out.println(outputPath1);
     String outputPath2 = outputPath + "/step_two/";
     String outputFile2 = outputPath2 + "19/part-r-00000";
+//    System.out.println(outputPath2);
 
     String answerFile1 = root + "/mapreduce/revised_pagerank/answer-step1";
     String answerFile2 = root + "/mapreduce/revised_pagerank/answer-step2";

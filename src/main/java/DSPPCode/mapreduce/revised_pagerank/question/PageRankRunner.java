@@ -1,6 +1,5 @@
 package DSPPCode.mapreduce.revised_pagerank.question;
 
-// import DSPPCode.mapreduce.revised_pagerank.impl.PageRankCombinerImpl;
 import DSPPCode.mapreduce.revised_pagerank.impl.PageRankReducerImpl;
 import DSPPCode.mapreduce.revised_pagerank.question.utils.ReducePageRankWritable;
 import org.apache.hadoop.conf.Configured;
@@ -61,8 +60,6 @@ public class PageRankRunner extends Configured implements Tool {
     job.setMapperClass(PageRankMapper.class);
     job.setMapOutputKeyClass(Text.class);
     job.setMapOutputValueClass(ReducePageRankWritable.class);
-
-    // job.setCombinerClass(PageRankCombinerImpl.class);
 
     // 设置reduce方法及其输出键值对的数据类型
     job.setReducerClass(PageRankReducerImpl.class);

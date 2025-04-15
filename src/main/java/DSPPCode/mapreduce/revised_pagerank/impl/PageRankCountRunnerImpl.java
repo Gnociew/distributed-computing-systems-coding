@@ -1,5 +1,6 @@
 package DSPPCode.mapreduce.revised_pagerank.impl;
 
+import DSPPCode.mapreduce.revised_pagerank.impl.PageRankCountCombinerImpl;
 import DSPPCode.mapreduce.revised_pagerank.question.PageRankCountRunner;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.IntWritable;
@@ -18,6 +19,7 @@ public class PageRankCountRunnerImpl extends PageRankCountRunner {
     job.setOutputFormatClass(TextOutputFormat.class);
 
     job.setMapperClass(PageRankCountMapperImpl.class);
+    job.setCombinerClass(PageRankCountCombinerImpl.class);
     job.setReducerClass(PageRankCountReducerImpl.class);
 
     job.setMapOutputKeyClass(Text.class);
