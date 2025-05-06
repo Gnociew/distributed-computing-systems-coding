@@ -45,6 +45,7 @@
 $$
 PR(A) = \frac{1-d}{N} + d \sum_{i \in \text{In}(A)}\frac{PR(i)}{L(i)}
 $$
+
 其中
 - $text{In(A)}$：所有指向 A 的网页集合
 - $L(i)$：网页 i 的出链数
