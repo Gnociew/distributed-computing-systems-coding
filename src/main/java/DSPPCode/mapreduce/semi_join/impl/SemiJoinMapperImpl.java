@@ -29,10 +29,15 @@ public class SemiJoinMapperImpl extends SemiJoinMapper {
     }
 
     // 从分布式缓存中加载 Course 表
+    // 从 Mapper 的上下文中获取该 Job 所配置的缓存文件
     URI[] cacheFiles = context.getCacheFiles();
     if (cacheFiles != null) {
+      // 可能有多个缓存文件
       for (URI uri : cacheFiles) {
         Path path = new Path(uri.getPath());
+        /*
+          Hadoop 会将 DistributedCache 中的文件复制到本地工作目录下，所以我们只需要用 getName() 获得文件名即可访问
+        */
         try (BufferedReader reader = new BufferedReader(new FileReader(path.getName()))) {
           String line;
           while ((line = reader.readLine()) != null) {
