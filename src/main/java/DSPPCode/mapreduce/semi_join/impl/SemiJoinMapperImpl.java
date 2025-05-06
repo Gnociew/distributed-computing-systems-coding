@@ -23,6 +23,7 @@ public class SemiJoinMapperImpl extends SemiJoinMapper {
   // 在每个 Mapper 启动时只运行一次
   protected void setup(Context context) throws IOException, InterruptedException {
     String taskId = context.getTaskAttemptID().toString();
+    // 第一个 Mapper 才输出表头
     if (taskId.contains("_m_000000")) {
       context.write(new Text("S#\tC#\tScore"), NullWritable.get());
     }
