@@ -26,7 +26,7 @@ public class CoOccurrenceReducerImpl extends CoOccurrenceReducer {
 
     Set<Integer> items = new HashSet<>();
 
-    // 遍历每个物品对的值（每个用户对这对物品的贡献，通常是1）
+    // 将当前用户评分过的物品编号加入 items 集合
     for (Text val : values) {
       // System.out.println(val.toString());
       items.add(Integer.parseInt(val.toString()));
@@ -36,6 +36,7 @@ public class CoOccurrenceReducerImpl extends CoOccurrenceReducer {
     for (Integer item1 : items) {
       Text pair = new Text(item1 + "\t" + item1);
       LongWritable currentValue = outputData.get(pair);
+      // 若该 item 对出现过
       if (currentValue != null) {
         outputData.put(pair, new LongWritable(currentValue.get() + 1));
       } else {
