@@ -9,7 +9,9 @@ public abstract class WordCount {
   private static final String MODE = "local";
 
   public void run(String[] args) {
+    // 初始化 Spark 应用的上下文
     JavaSparkContext sc = new JavaSparkContext(MODE, getClass().getName());
+
     // 读入文本数据，创建名为lines的RDD
     JavaRDD<String> lines = sc.textFile(args[0]);
     JavaPairRDD<String, Integer> counter = wordCount(lines);
