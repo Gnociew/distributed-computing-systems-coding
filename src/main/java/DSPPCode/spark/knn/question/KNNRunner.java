@@ -23,12 +23,16 @@ public class KNNRunner {
     // 输出文件
     String outputFile = args[3];
 
+    /*SparkSession 是 Spark 应用的入口，可以用它读取文件、运行 SQL、操作 RDD/DataFrame*/
     SparkSession ss = SparkSession.builder()
         .master("local")
         .appName("KNN")
         .getOrCreate();
 
     // 把训练数据转换为Data类
+    /*
+     * ss.read().textFile(trainFile) 返回 Dataset<String>，其中每一行是文件的一行文本
+     * */
     JavaRDD<Data> trainData = ss.read().textFile(trainFile).javaRDD().map(line -> {
       String[] array = line.split(" ");
       int id = Integer.parseInt(array[0]);
@@ -57,7 +61,7 @@ public class KNNRunner {
     String rddInfo;
     try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
       JavaPairRDD<Integer, Integer> rdd = new KNNImpl(k).run(trainData, queryData);
-      rddInfo = rdd.toDebugString();
+      rddInfo = rdd.toDebugString();  //  RDD 的执行计划和依赖信息，主要用于调试目的
       List<Tuple2<Integer, Integer>> result = rdd.collect();
       for (Tuple2<Integer, Integer> pair : result) {
         bw.write(pair._1 + "," + pair._2 + "\n");
