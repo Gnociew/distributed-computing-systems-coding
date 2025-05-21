@@ -49,6 +49,7 @@ abstract public class IterationStep implements Serializable {
     old[0] = 10.0;
     boolean sign = false;
     while (!termination(old, weights)) {
+      // 如果不是第一次迭代，将当前的权重 weights 复制到 old 数组中
       if (sign) {
         old = weights.clone();
       } else {

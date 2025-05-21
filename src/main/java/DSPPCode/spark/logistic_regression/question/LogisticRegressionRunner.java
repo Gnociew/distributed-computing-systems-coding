@@ -51,10 +51,13 @@ public class LogisticRegressionRunner {
         .appName("LogisticRegression")
         .getOrCreate();
 
+    // 读取输入文件并转化为 DataPoint 格式
     JavaRDD<String> lines = spark.read().textFile(args[0]).javaRDD();
     JavaRDD<DataPoint> points = lines.map(new ParsePoint()).cache();
+
     // 初始化权重默认是0
     double[] w = new double[D];
+
     // 梯度下降法求解
     w = new IterationStepImpl().iteration(points, w);
     BufferedWriter bw = new BufferedWriter(new FileWriter(new File(args[1])));
