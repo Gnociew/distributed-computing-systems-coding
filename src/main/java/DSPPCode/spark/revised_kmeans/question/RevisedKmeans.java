@@ -31,10 +31,12 @@ public abstract class RevisedKmeans implements Serializable {
     int iterateNum = 20;
 
     // 从输入数据中获取所有的点
+    // 包含所有数据点的 RDD，每个数据点是一个整数列表
     JavaRDD<List<Integer>> points = allPoints
         .map(line -> Arrays.stream(line.split(",")).map(Integer::valueOf).collect(toList()));
 
     // 从输入数据中获取k个距离中心点的初始位置
+    // 包含 K 个初始聚类中心点的列表，每个中心点是一个 List<Double>
     List<List<Double>> tmpKPoints = initKPoints
         .map(line -> Arrays.stream(line.split(",")).map(Double::valueOf).collect(toList()))
         .collect();
@@ -47,7 +49,7 @@ public abstract class RevisedKmeans implements Serializable {
       iteration++;
       // 把聚类中心点设为广播变量
       Broadcast<List<List<Double>>> broadcastKPoints = createBroadcastVariable(sc, kPoints);
-      // 进行迭代过程并获得新的聚类中心点
+      // 进行迭代，获得新的聚类中心点
       List<List<Double>> newPoints = iterationStep(points,broadcastKPoints);
       // 判断新的聚类中心点是否为空
       if (newPoints.isEmpty()){
@@ -72,6 +74,7 @@ public abstract class RevisedKmeans implements Serializable {
   }
 
   // 计算距离最近的聚类中心
+  // （键：数据点 p 所属的聚类中心的索引，值：([p的坐标]，1)）
   public JavaPairRDD<Integer, Tuple2<List<Integer>, Integer>> getClosestPoint(
       JavaRDD<List<Integer>> points, Broadcast<List<List<Double>>> broadcastKPoints) {
     return points
@@ -79,13 +82,16 @@ public abstract class RevisedKmeans implements Serializable {
   }
 
   // 按类别号标识聚合，并计算新的聚类中心
+  // 输入：（键：聚类中心索引，值：（[对应的数据点], 计数））
   public List<List<Double>> getNewPoints(
       JavaPairRDD<Integer, Tuple2<List<Integer>, Integer>> closest) {
     return closest
         .reduceByKey((t1, t2) -> {
-          // 计算两个点的和，并累加数据点个数
+          // 计算两个点的逐维度坐标和，并累加数据点个数
           return new Tuple2<>(addPoints(t1._1, t2._1), t1._2 + t2._2);
+          // 按聚类中心的索引排序，确保聚类中心的顺序一致
         }).sortByKey()
+        // map:对于每个元素应用指定函数
         .map(t -> {
           List<Double> newPoint = new ArrayList<>();
           // 每个维度的和值除以数据点个数得到每个维度的均值
@@ -98,7 +104,7 @@ public abstract class RevisedKmeans implements Serializable {
   }
 
   // 计算两个的点距离的平方
-  public Double distanceSquared(List<Integer> p1, List<Double> p2) {
+  public Double distanceSquared(List<Double> p1, List<Double> p2) {
     double sum = 0.0;
     for (int i = 0; i < p1.size(); i++) {
       sum += Math.pow(p1.get(i).doubleValue() - p2.get(i), 2);
@@ -107,6 +113,7 @@ public abstract class RevisedKmeans implements Serializable {
   }
 
   // 计算两个点的和
+  // 逐维度将两个点的坐标相加
   public List<Integer> addPoints(List<Integer> p1, List<Integer> p2) {
     List<Integer> newPoint = new ArrayList<>();
     for (int i = 0; i < p1.size(); i++) {

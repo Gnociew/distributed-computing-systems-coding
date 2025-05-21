@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="spark_revised_kmeans">
+    <output-path>$PROJECT_DIR$/out/artifacts/spark_revised_kmeans</output-path>
+    <root id="archive" name="spark_revised_kmeans.jar">
+      <element id="module-output" name="DSPP_Exercise" />
+      <element id="module-source" name="DSPP_Exercise" />
+    </root>
+  </artifact>
+</component>
