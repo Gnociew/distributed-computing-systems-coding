@@ -30,7 +30,7 @@ public abstract class RevisedKmeans implements Serializable {
     // 循环次数
     int iterateNum = 20;
 
-    // 从输入数据中获取所有的点
+    // 从输入数据中获取所有的点（将每个数据点字符串拆分成整数）
     // 包含所有数据点的 RDD，每个数据点是一个整数列表
     JavaRDD<List<Integer>> points = allPoints
         .map(line -> Arrays.stream(line.split(",")).map(Integer::valueOf).collect(toList()));
@@ -39,8 +39,9 @@ public abstract class RevisedKmeans implements Serializable {
     // 包含 K 个初始聚类中心点的列表，每个中心点是一个 List<Double>
     List<List<Double>> tmpKPoints = initKPoints
         .map(line -> Arrays.stream(line.split(",")).map(Double::valueOf).collect(toList()))
-        .collect();
+        .collect();   /* collect()将 RDD 中的数据拉取到 driver 上，并将其存储为一个 Java 集合 */
 
+    // 当前聚类中心，初始化
     List<List<Double>> kPoints = new ArrayList<>(tmpKPoints);
 
     // 执行iterateNum次迭代计算
@@ -78,6 +79,7 @@ public abstract class RevisedKmeans implements Serializable {
   public JavaPairRDD<Integer, Tuple2<List<Integer>, Integer>> getClosestPoint(
       JavaRDD<List<Integer>> points, Broadcast<List<List<Double>>> broadcastKPoints) {
     return points
+        /* 将 JavaRDD 转换为 JavaPairRDD */
         .mapToPair(p -> new Tuple2<>(closestPoint(p, broadcastKPoints), new Tuple2<>(p, 1)));
   }
 

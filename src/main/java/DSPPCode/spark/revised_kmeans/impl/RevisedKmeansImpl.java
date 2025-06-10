@@ -37,7 +37,9 @@ public class RevisedKmeansImpl extends RevisedKmeans {
   }
 
   @Override
+  // 本地变量 -> 所有 Spark 的工作节点
   public Broadcast<List<List<Double>>> createBroadcastVariable(JavaSparkContext sc, List<List<Double>> localVariable) {
+    /* JavaSparkContext 对象：与 Spark 集群交互的入口点 */
     return sc.broadcast(localVariable);
   }
 
@@ -58,6 +60,7 @@ public class RevisedKmeansImpl extends RevisedKmeans {
     boolean converged = true;
     for (int i = 0; i < oldCenters.size(); i++) {
       double dist = Math.sqrt(distanceSquared(oldCenters.get(i), newCenters.get(i)));
+      // 只要有一个不收敛就是不收敛
       if (dist >= DELTA) {
         converged = false;
         break;
