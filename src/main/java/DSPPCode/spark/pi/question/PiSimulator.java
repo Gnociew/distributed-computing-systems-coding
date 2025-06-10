@@ -14,7 +14,8 @@ public abstract class PiSimulator implements Serializable {
 
   public double run(int slices) {
     JavaSparkContext sc = new JavaSparkContext(MODE, "Pi");
-    // 生成n个”子弹“，用于随后的打点操作
+
+    // 生成n个”子弹“，用于随后的打点操作，slices 代表分区数
     int n = 100000 * slices;
     List<Integer> l = new ArrayList<>(n);
     for (int i = 0; i < n; i++) {
@@ -22,7 +23,8 @@ public abstract class PiSimulator implements Serializable {
     }
     // 转换为一个 Spark 的分布式数据集，并将其分为多个分区进行并行处理
     JavaRDD<Integer> parallelInput = sc.parallelize(l, slices);
-    // reduce 操作依次将 RDD 中的元素两两进行合并，最终得到一个单一的结果
+
+    // reduce 操作依次将(所有分区) RDD 中的元素两两进行合并，最终得到一个单一的结果
     int count = sampledPoint(parallelInput).reduce((Integer i1, Integer i2) -> (i1 + i2));
     double pi = 4.0 * count / n;
     sc.close();
